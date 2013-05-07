@@ -1,0 +1,1 @@
+Parties = new Meteor.Collection("parties");

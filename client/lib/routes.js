@@ -1,3 +1,5 @@
 Meteor.Router.add({
-	'/hello': 'hello'
+	'/': 'home',
+	'/parties/new': 'parties_new',
+	'*': 'not_found'
 });

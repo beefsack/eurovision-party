@@ -1,0 +1,17 @@
+<template name="navigation">
+	<span class="pull-right">
+		{{loginButtons}}
+	</span>
+	{{#if currentUser}}
+	<ul class="nav nav-pills pull-right">
+		<li>
+			<a href="/parties/new">Host a party</a>
+		</li>
+		{{#if showMyParties}}
+		<li>
+			<a href="/parties">My parties</a>
+		</li>
+		{{/if}}
+	</ul>
+	{{/if}}
+</template>

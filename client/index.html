@@ -1,7 +1,18 @@
 <head>
-	<title>eurovision-party</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>There's no party like a Eurovision party</title>
 </head>
 
 <body>
-	{{#isolate}} {{renderPage}} {{/isolate}}
+	<div class="container">
+		<div class="header">
+			<span class="pull-right">
+				{{> navigation}}
+			</span>
+			<h3>
+				<a href="/">Eurovision party!</a>
+			</h3>
+		</div>
+		{{#isolate}} {{renderPage}} {{/isolate}}
+	</div>
 </body>
