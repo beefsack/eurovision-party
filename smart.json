@@ -4,6 +4,8 @@
     "branch": "master"
   },
   "packages": {
-    "router": {}
+    "router": {},
+    "accounts-ui-bootstrap-dropdown": {},
+    "spin": {}
   }
 }

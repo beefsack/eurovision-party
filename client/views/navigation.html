@@ -3,15 +3,20 @@
 		{{loginButtons}}
 	</span>
 	{{#if currentUser}}
-	<ul class="nav nav-pills pull-right">
-		<li>
-			<a href="/parties/new">Host a party</a>
-		</li>
-		{{#if showMyParties}}
-		<li>
-			<a href="/parties">My parties</a>
-		</li>
-		{{/if}}
-	</ul>
+		<ul class="nav nav-pills pull-right">
+			{{#if currentUser.profile.admin}}
+				<li>
+					<a href="{{adminIndexPath}}">Admin</a>
+				</li>
+			{{/if}}
+			<li>
+				<a href="{{partiesNewPath}}">Host a party</a>
+			</li>
+			{{#if showMyParties}}
+				<li>
+					<a href="{{partiesIndexPath}}">My parties</a>
+				</li>
+			{{/if}}
+		</ul>
 	{{/if}}
 </template>

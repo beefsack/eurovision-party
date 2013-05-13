@@ -1,0 +1,9 @@
+<template name="partiesList">
+	<ul>
+		{{#each parties}}
+			<li>
+				<a href="{{partiesShowPath this}}">{{name}}</a>
+			</li>
+		{{/each}}
+	</ul>
+</template>
