@@ -15,31 +15,27 @@ Meteor.Router.add({
 });
 
 Meteor.Router.filters({
-	requireLogin: function(page) {
-		if (Meteor.user()) {
+	requireAdmin: function(page) {
+		if (Meteor.user().profile.admin) {
 			return page;
-		} else if (Meteor.loggingIn()) {
-			return 'loading';
 		}
 		return 'accessDenied';
 	},
-	requireAdmin: function(page) {
-		if (Meteor.user().profile.admin) {
+	canCreateParty: function(page) {
+		if (Ability.canCreateParty(Meteor.user())) {
 			return page;
 		}
 		return 'accessDenied';
 	}
 });
 
-Meteor.Router.filter('requireLogin', {
-	only: [
-		'partiesNew',
-		'adminIndex'
-	]
-});
-
 Meteor.Router.filter('requireAdmin', {
 	only: [
 		'adminIndex'
+	]
+});
+Meteor.Router.filter('canCreateParty', {
+	only: [
+		'partiesNew',
 	]
 });

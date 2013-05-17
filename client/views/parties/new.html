@@ -6,6 +6,12 @@
 					<legend>New party</legend>
 					<label>Party name</label>
 					<input name="name" type="text" placeholder="Party name..." required />
+					<label>Eurovision year</label>
+					<select name="year" required>
+						{{#each years}}
+							<option value="{{this}}">{{this}}</option>
+						{{/each}}
+					</select>
 					<button type="submit" class="btn">Create</button>
 				</fieldset>
 			</form>

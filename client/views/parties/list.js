@@ -1,5 +1,7 @@
 Template.partiesList.helpers({
 	parties: function() {
-		return Parties.find();
+		return Parties.find({}, {
+			sort: [['createdAt', 'desc']]
+		});
 	}
 });

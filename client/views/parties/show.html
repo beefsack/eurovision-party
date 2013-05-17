@@ -1,5 +1,134 @@
 <template name="partiesShow">
-	{{#with party}}
-		<h1>{{name}}</h1>
-	{{/with}}
+	<div class="row">
+		<div class="col col-lg-6">
+			{{#with party}}
+				<h3>{{name}} ({{year}})
+					<small>
+						- voting {{#if party.votingOpen}}open{{else}}closed{{/if}}
+						{{#if showToggleVotingOpenButton}}
+							(<a id="toggle-party-voting-open" href>toggle</a>)
+						{{/if}}
+					</small>
+				</h3>
+			{{/with}}
+		</div>
+		<div class="col col-lg-6" data-spy="affix" data-offset-top="100">
+			<ul class="nav nav-pills pull-right">
+				<li><a href="#your-votes">Your votes</a></li>
+				<li><a href="#party-ladder">Party ladder</a></li>
+				<li><a href="#country-ladder">Country ladder</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col col-lg-4">
+			<a id="your-votes"></a>
+			<h3>Your votes</h3>
+			<h4>To vote, click a country below, or choose one from the quick select.</h4>
+			<label>
+				Quick select: 
+				<select id="country-quick-select">
+					{{#each countries}}
+						<option value="{{id}}">{{name}}</option>
+					{{/each}}
+				</select>
+			</label>
+			<div class="countries-list">
+				{{#each countries}}
+					<div id="country{{id}}" class="country panel">
+						<div class="name">
+							<img class="flag" src="{{flagPath}}" />
+							{{name}}
+						</div>
+						<div class="score">
+							{{#if isEditing}}
+								<div class="row">
+									<div class="col col-lg-4 col-sm-4">
+										<input class="edit-score" value="{{score}}" />
+									</div>
+									<div class="col col-lg-8 col-sm-8">
+										<button class="btn btn-primary">Save</button>
+										<button class="btn close-country-button">Close</button>
+									</div>
+								</div>
+							{{else}}
+								{{score}}
+							{{/if}}
+						</div>
+						{{#if isFocusing}}
+							<div class="image">
+								<img class="image" src="{{imagePath}}" />
+							</div>
+						{{/if}}
+						<div class="song">
+							<span class="glyphicon glyphicon-headphones"></span>
+							{{song}}
+						</div>
+						<div class="artist">
+							<span class="glyphicon glyphicon-user"></span>
+							{{artist}}
+						</div>
+					</div>
+				{{/each}}
+			</div>
+		</div>
+		<div class="col col-lg-4">
+			<a id="party-ladder"></a>
+			<h3>
+				Party ladder
+				{{#if showAddUserButton}}
+					<small> - (<a id="add-user" href>add user</a>)</small>
+				{{/if}}
+			</h3>
+			<table class="table table-striped">
+				<tr>
+					<th>Name</th>
+					<th>Score</th>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col col-lg-4">
+			<a id="country-ladder"></a>
+			<h3>Country ladder</h3>
+			<table class="table table-striped">
+				<tr>
+					<th>Name</th>
+					<th>Score</th>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>Bob</td>
+					<td>5</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
 </template>
