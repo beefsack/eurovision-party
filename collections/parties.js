@@ -7,6 +7,7 @@ Parties.deny({
 		doc.userId = doc.userId || userId;
 		doc.votingOpen = doc.votingOpen || false;
 		doc.users = {};
+		doc.countryScores = {};
 		return false;
 	}
 })
@@ -61,5 +62,28 @@ Meteor.methods({
 				votingOpen: !party.votingOpen
 			}
 		});
+	},
+	setPartyCountryScore: function(partyId, country, score) {
+		var user = Meteor.user();
+		var party = Parties.findOne(partyId);
+		if (!party) {
+			throw new Meteor.Error(422, "Could not find party");
+		}
+
+		if (!Ability.canUpdateParty(user, party)) {
+			throw new Meteor.Error(401,
+				"Not allowed to set score for party");
+		}
+
+		if (!_.isNumber(score)) {
+			throw new Meteor.Error(422, "Score must be a number, eg. 5 or 90.2");
+		}
+
+		party.countryScores = party.countryScores || {};
+		var update = {
+			'$set': {}
+		};
+		update['$set']['countryScores.' + country] = score;
+		Parties.update(partyId, update);
 	}
 });

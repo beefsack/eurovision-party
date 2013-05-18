@@ -3,7 +3,7 @@ Template.partiesShow.helpers({
 		return Parties.findOne(Session.get('partyId'));
 	},
 	partyUsers: function() {
-		return PartuUsers.find();
+		return PartyUsers.find();
 	},
 	showToggleVotingOpenButton: function() {
 		return Ability.canUpdateParty(Meteor.user(),
@@ -17,6 +17,10 @@ Template.partiesShow.helpers({
 		return Meteor.userId() && PartyUsers.findOne({
 			userId: Meteor.userId()
 		});
+	},
+	showCountryScoreInputs: function() {
+		var party = Parties.findOne(Session.get('partyId'));
+		return Ability.canUpdateParty(Meteor.user(), party);
 	},
 	countries: function() {
 		var party = Parties.findOne(Session.get('partyId'));
@@ -50,6 +54,9 @@ Template.partiesShow.helpers({
 	},
 	yourCountryRank: function() {
 		return Template.partiesShow.rankedCountriesForUser(Meteor.userId());
+	},
+	countriesByScore: function() {
+		return Template.partiesShow.countriesByScore();
 	}
 });
 
@@ -87,6 +94,24 @@ Template.partiesShow.rankedCountriesForUser = function(userId) {
 		return -c.score;
 	}), function(c) {
 		c.rank = c.score && rank < 10 && ++rank;
+		return c;
+	});
+};
+
+Template.partiesShow.countriesByScore = function() {
+	var p = Parties.findOne(Session.get('partyId'));
+	if (!p) {
+		return;
+	}
+	var rank = 0;
+	return _.map(_.sortBy(_.map(CountriesByYear[p.year], function(c) {
+		return _.extend(c, {
+			score: p.countryScores && p.countryScores[c.id] || 0
+		});
+	}), function(c) {
+		return -c.score;
+	}), function(c) {
+		c.rank = ++rank;
 		return c;
 	});
 };
@@ -133,9 +158,28 @@ Template.partiesShow.events({
 		Meteor.call('setPartyUserCountryScore', pu._id, this.id, score,
 			function(error) {
 				if (error) {
+					Template.partiesShow.partiesShowFocusOn(countryId);
 					return alert(error.reason);
 				}
-				Template.partiesShow.partiesShowFocusOn(countryId);
+			});
+		Template.partiesShow.partiesShowFocusOn(countryId);
+	},
+	'submit .country-score': function(event) {
+		event.preventDefault();
+		var score = parseFloat($(event.target).find('input.country-score').val());
+		if (_.isNaN(score)) {
+			return alert("Score must be a number, eg. 0, 5 or 90.2");
+		}
+		var party = Parties.findOne(Session.get('partyId'));
+		if (!party) {
+			return;
+		}
+		var countryId = this.id;
+		Meteor.call('setPartyCountryScore', party._id, this.id, score,
+			function(error) {
+				if (error) {
+					return alert(error.reason);
+				}
 			});
 	}
 });
