@@ -117,13 +117,15 @@ Template.partiesShow.countriesByScore = function() {
 };
 
 Template.partiesShow.usersByScore = function() {
-	var countries = _.map(_.first(Template.partiesShow.countriesByScore() || [],
-		10), function(c) {
-			return {
-				id: c.id,
-				rank: c.rank
-			};
-		});
+	var countries = _.map(_.filter(_.first(
+		Template.partiesShow.countriesByScore() || [], 10), function(c) {
+		return c.score > 0;
+	}), function(c) {
+		return {
+			id: c.id,
+			rank: c.rank
+		};
+	});
 	var pu = PartyUsers.find({
 		partyId: Session.get('partyId')
 	});
