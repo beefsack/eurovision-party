@@ -191,8 +191,8 @@ Template.partiesShow.events({
 	'submit .edit-score': function(event) {
 		event.preventDefault();
 		var score = parseFloat($(event.target).find('input.edit-score').val());
-		if (_.isNaN(score)) {
-			return alert("Score must be a number, eg. 0, 5 or 90.2");
+		if (_.isNaN(score) || score < 0 || score > 100) {
+			return alert("Score must be a number between 0 and 100");
 		}
 		var pu = PartyUsers.findOne({
 			userId: Meteor.userId(),

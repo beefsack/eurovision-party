@@ -12,7 +12,7 @@
 				</h3>
 			{{/with}}
 		</div>
-		<div class="col col-lg-6" data-spy="affix" data-offset-top="100">
+		<div class="col col-lg-6">
 			<ul class="nav nav-pills pull-right">
 				{{#if showYourVotes}}
 					<li><a href="#your-votes">Your votes</a></li>
@@ -43,22 +43,22 @@
 					{{#each yourCountryRank}}
 						<div id="country{{id}}" class="country panel">
 							<div class="row">
-								<div class="name col col-lg-6 col-sm-6">
+								<div class="name col col-lg-10 col-sm-10">
 									<img class="flag" src="{{flagPath}}" />
 									{{name}}
+									<span class="score pull-right">
+										{{#if isEditing}}
+											<form class="edit-score">
+												<input type="text" class="edit-score" value="{{voteScore}}" />
+												<input type="submit" class="btn btn-primary" value="✔" />
+											</form>
+										{{else}}
+											{{voteScore}}
+										{{/if}}
+									</span>
 								</div>
-								<div class="your-country-rank col col-lg-3 col-sm-3">
+								<div class="your-country-rank col col-lg-2 col-sm-2">
 									{{#if rank}}#{{rank}}{{/if}}
-								</div>
-								<div class="score col col-lg-3 col-sm-3">
-									{{#if isEditing}}
-										<form class="edit-score">
-											<input class="edit-score" value="{{voteScore}}" />
-											<input type="submit" />
-										</form>
-									{{else}}
-										{{voteScore}}
-									{{/if}}
 								</div>
 							</div>
 							{{#if isFocusing}}
