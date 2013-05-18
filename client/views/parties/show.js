@@ -5,6 +5,9 @@ Template.partiesShow.helpers({
 	partyUsers: function() {
 		return PartyUsers.find();
 	},
+	partyUsersByScore: function() {
+		return Template.partiesShow.usersByScore();
+	},
 	showToggleVotingOpenButton: function() {
 		return Ability.canUpdateParty(Meteor.user(),
 			Parties.findOne(Session.get('partyId')));
@@ -40,9 +43,6 @@ Template.partiesShow.helpers({
 	},
 	voteScore: function() {
 		return this.score && this.score !== 0 ? this.score : '';
-	},
-	partyUsersScores: function() {
-		var users = [];
 	},
 	isFocusing: function() {
 		return Session.get('focusCountry') == this.id;
@@ -115,6 +115,51 @@ Template.partiesShow.countriesByScore = function() {
 		return c;
 	});
 };
+
+Template.partiesShow.usersByScore = function() {
+	var countries = _.map(_.first(Template.partiesShow.countriesByScore() || [],
+		10), function(c) {
+			return {
+				id: c.id,
+				rank: c.rank
+			};
+		});
+	var pu = PartyUsers.find({
+		partyId: Session.get('partyId')
+	});
+	if (!pu) {
+		return;
+	}
+	var rank = 0;
+	return _.map(_.sortBy(pu.map(function(u) {
+		var score = 0;
+		_.each(_.filter(_.first(
+			Template.partiesShow.rankedCountriesForUser(u.userId) || [], 10),
+			function(c) {
+				return c.rank;
+			}), function(c) {
+				var actualC = _.find(countries, function(ac) {
+					return ac.id === c.id;
+				});
+				if (actualC) {
+					// One point if the country is in the top 10
+					score++;
+					if (actualC.rank === c.rank) {
+						// Another point if the country is in the right spot
+						score++;
+					}
+				}
+			});
+		return _.extend(u, {
+			score: score
+		});
+	}), function(u) {
+		return -u.score;
+	}), function(u) {
+		u.rank = ++rank;
+		return u;
+	});
+}
 
 Template.partiesShow.events({
 	'click #toggle-party-voting-open' : function (event) {

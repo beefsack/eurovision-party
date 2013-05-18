@@ -17,8 +17,8 @@
 				{{#if showYourVotes}}
 					<li><a href="#your-votes">Your votes</a></li>
 				{{/if}}
-				<li><a href="#party-ladder">Party ladder</a></li>
-				<li><a href="#country-ladder">Country ladder</a></li>
+				<li><a href="#party-ladder">Party standings</a></li>
+				<li><a href="#country-ladder">Eurovision standings</a></li>
 			</ul>
 		</div>
 	</div>
@@ -27,7 +27,10 @@
 			<div class="col col-lg-4">
 				<a id="your-votes"></a>
 				<h3>Your votes</h3>
-				<h4>To vote, click a country below, or choose one from the quick select.</h4>
+				<div class="panel">
+					<div class="panel-heading">How to vote</div>
+					When you watch a song, give the song a score out of 100.  The system will use that score to create your top 10 songs.
+				</div>
 				<label>
 					Quick select: 
 					<select id="country-quick-select">
@@ -79,24 +82,25 @@
 		<div class="col col-lg-4">
 			<a id="party-ladder"></a>
 			<h3>
-				Party ladder
+				Party standings
 				{{#if showAddUserButton}}
-					<small> - (<a id="add-user" href="{{partiesUsersPath party}}">manage</a>)</small>
+					<small> - (<a id="add-user" href="{{partiesUsersPath party}}">manage users</a>)</small>
 				{{/if}}
 			</h3>
+			<div class="panel">
+				<div class="panel-heading">How party standings work</div>
+				Every song in your top 10 that is also in the Eurovision top 10 gives you <strong>one point</strong>.  Every song in your top 10 that exactly matches the Eurovision standings gives you <strong>one extra point</strong>.
+			</div>
 			<table class="table table-striped">
 				<tr>
 					<th></th>
 					<th>Name</th>
 					<th>Score</th>
 				</tr>
-				{{#each partyUsersScores}}
+				{{#each partyUsersByScore}}
 					<tr>
 						<td>#{{rank}}</td>
-						<td>
-							<img class="flag" src="{{flagPath}}" />
-							{{name}}
-						</td>
+						<td>{{username}}</td>
 						<td>{{score}}</td>
 					</tr>
 				{{/each}}
@@ -104,7 +108,11 @@
 		</div>
 		<div class="col col-lg-4">
 			<a id="country-ladder"></a>
-			<h3>Country ladder</h3>
+			<h3>Eurovision standings</h3>
+			<div class="panel">
+				<div class="panel-heading">What are Eurovision standings?</div>
+				The points that you see here are exactly the same as the points you see on TV.
+			</div>
 			<table class="table table-striped country-ladder">
 				<tr>
 					<th></th>
