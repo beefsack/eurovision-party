@@ -1,0 +1,24 @@
+<template name="partiesUsers">
+	<h3>
+		Users for
+		<a href="{{partiesShowPath party}}">{{party.name}} ({{party.year}})</a>
+	</h3>
+	<table class="table">
+		{{#each partyUsers}}
+			<tr>
+				<td>{{username}}</td>
+			</tr>
+		{{/each}}
+	</table>
+	{{#if addableUsers}}
+		<h4>Add user</h4>
+		<form id="addUserForm">
+			<select name="user">
+				{{#each addableUsers}}
+					<option value="{{_id}}">{{username}} ({{userEmails}})</option>
+				{{/each}}
+			</select>
+			<input type="submit" value="Add" />
+		</form>
+	{{/if}}
+</template>

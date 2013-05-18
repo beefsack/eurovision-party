@@ -14,70 +14,74 @@
 		</div>
 		<div class="col col-lg-6" data-spy="affix" data-offset-top="100">
 			<ul class="nav nav-pills pull-right">
-				<li><a href="#your-votes">Your votes</a></li>
+				{{#if showYourVotes}}
+					<li><a href="#your-votes">Your votes</a></li>
+				{{/if}}
 				<li><a href="#party-ladder">Party ladder</a></li>
 				<li><a href="#country-ladder">Country ladder</a></li>
 			</ul>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col col-lg-4">
-			<a id="your-votes"></a>
-			<h3>Your votes</h3>
-			<h4>To vote, click a country below, or choose one from the quick select.</h4>
-			<label>
-				Quick select: 
-				<select id="country-quick-select">
-					{{#each countries}}
-						<option value="{{id}}">{{name}}</option>
-					{{/each}}
-				</select>
-			</label>
-			<div class="countries-list">
-				{{#each countries}}
-					<div id="country{{id}}" class="country panel">
-						<div class="name">
-							<img class="flag" src="{{flagPath}}" />
-							{{name}}
-						</div>
-						<div class="score">
-							{{#if isEditing}}
-								<div class="row">
-									<div class="col col-lg-4 col-sm-4">
-										<input class="edit-score" value="{{score}}" />
-									</div>
-									<div class="col col-lg-8 col-sm-8">
-										<button class="btn btn-primary">Save</button>
-										<button class="btn close-country-button">Close</button>
-									</div>
+		{{#if showYourVotes}}
+			<div class="col col-lg-4">
+				<a id="your-votes"></a>
+				<h3>Your votes</h3>
+				<h4>To vote, click a country below, or choose one from the quick select.</h4>
+				<label>
+					Quick select: 
+					<select id="country-quick-select">
+						{{#each countries}}
+							<option value="{{id}}">{{name}}</option>
+						{{/each}}
+					</select>
+				</label>
+				<div class="countries-list">
+					{{#each yourCountryRank}}
+						<div id="country{{id}}" class="country panel">
+							<div class="row">
+								<div class="name col col-lg-6 col-sm-6">
+									<img class="flag" src="{{flagPath}}" />
+									{{name}}
 								</div>
-							{{else}}
-								{{score}}
+								<div class="your-country-rank col col-lg-3 col-sm-3">
+									{{#if rank}}#{{rank}}{{/if}}
+								</div>
+								<div class="score col col-lg-3 col-sm-3">
+									{{#if isEditing}}
+										<form class="edit-score">
+											<input class="edit-score" value="{{voteScore}}" />
+											<input type="submit" />
+										</form>
+									{{else}}
+										{{voteScore}}
+									{{/if}}
+								</div>
+							</div>
+							{{#if isFocusing}}
+								<div class="image">
+									<img class="image" src="{{imagePath}}" />
+								</div>
+								<div class="song">
+									<span class="glyphicon glyphicon-headphones"></span>
+									{{song}}
+								</div>
+								<div class="artist">
+									<span class="glyphicon glyphicon-user"></span>
+									{{artist}}
+								</div>
 							{{/if}}
 						</div>
-						{{#if isFocusing}}
-							<div class="image">
-								<img class="image" src="{{imagePath}}" />
-							</div>
-						{{/if}}
-						<div class="song">
-							<span class="glyphicon glyphicon-headphones"></span>
-							{{song}}
-						</div>
-						<div class="artist">
-							<span class="glyphicon glyphicon-user"></span>
-							{{artist}}
-						</div>
-					</div>
-				{{/each}}
+					{{/each}}
+				</div>
 			</div>
-		</div>
+		{{/if}}
 		<div class="col col-lg-4">
 			<a id="party-ladder"></a>
 			<h3>
 				Party ladder
 				{{#if showAddUserButton}}
-					<small> - (<a id="add-user" href>add user</a>)</small>
+					<small> - (<a id="add-user" href="{{partiesUsersPath party}}">manage</a>)</small>
 				{{/if}}
 			</h3>
 			<table class="table table-striped">
@@ -85,22 +89,12 @@
 					<th>Name</th>
 					<th>Score</th>
 				</tr>
-				<tr>
-					<td>Bob</td>
-					<td>5</td>
-				</tr>
-				<tr>
-					<td>Bob</td>
-					<td>5</td>
-				</tr>
-				<tr>
-					<td>Bob</td>
-					<td>5</td>
-				</tr>
-				<tr>
-					<td>Bob</td>
-					<td>5</td>
-				</tr>
+				{{#each partyUsersScores}}
+					<tr>
+						<td>{{name}}</td>
+						<td>{{score}}</td>
+					</tr>
+				{{/each}}
 			</table>
 		</div>
 		<div class="col col-lg-4">

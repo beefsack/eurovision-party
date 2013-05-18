@@ -2,6 +2,12 @@ Meteor.Router.add({
 	'/loading': 'loading',
 	'/parties/new': 'partiesNew',
 	'/parties/create': 'partiesCreate',
+	'/parties/:_id/users': {
+		to: 'partiesUsers',
+		and: function(id) {
+			Session.set('partyId', id);
+		}
+	},
 	'/parties/:_id': {
 		to: 'partiesShow',
 		and: function(id) {

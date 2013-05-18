@@ -20,22 +20,23 @@
 	.country {
 		background-color: #e5e5e5;
 		.name {
+			font-weight: bold;
 			font-size: 18px;
+			line-height: 45px;
 			img {
 				margin-bottom: 0.25em;
 			}
 		}
-		.score {
-			font-weight: bold;
+		.score, .your-country-rank {
+			text-align: right;
 			font-size: 32px;
-			padding-left: 5px;
-			padding-top: 5px;
+		}
+		.your-country-rank {
+			color: #aaa;
 		}
 		img.image {
 			margin-top: 10px;
-			margin-bottom: 20px;
 			border: 5px solid white;
-			opacity: 0.8;
 		}
 		.artist {
 			text-align: right;
@@ -46,9 +47,19 @@
 		}
 		.song {
 			text-align: right;
+			margin-top: 10px;
 			.glyphicon {
 				float: right;
 				margin-left: 5px;
+			}
+		}
+		form.edit-score {
+			[type=submit] {
+				display: none;
+			}
+			input.edit-score {
+				text-align: right;
+				font-size: 32px;
 			}
 		}
 	}
