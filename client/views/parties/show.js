@@ -47,6 +47,10 @@ Template.partiesShow.helpers({
 	isFocusing: function() {
 		return Session.get('focusCountry') == this.id;
 	},
+	isVotingOpen: function() {
+		var party = Parties.findOne(Session.get('partyId'));
+		return party && party.votingOpen;
+	},
 	isEditing: function() {
 		var party = Parties.findOne(Session.get('partyId'));
 		return party && party.votingOpen && Session.get('focusCountry') ==
@@ -148,25 +152,26 @@ Template.partiesShow.usersByScore = function() {
 	var rank = 0;
 	return _.map(_.sortBy(pu.map(function(u) {
 		var score = 0;
-		_.each(_.filter(_.first(
-			Template.partiesShow.rankedCountriesForUser(u.userId) || [], 10),
-			function(c) {
-				return c.rank;
-			}), function(c) {
-				var actualC = _.find(countries, function(ac) {
-					return ac.id === c.id;
-				});
-				if (actualC) {
-					// One point if the country is in the top 10
-					score++;
-					if (actualC.rank === c.rank) {
-						// Another point if the country is in the right spot
-						score++;
-					}
-				}
+		var userCountries = _.filter(_.first(Template.partiesShow.
+			rankedCountriesForUser(u.userId) || [], 10), function(c) {
+			return c.rank;
+		});
+		_.each(userCountries, function(c) {
+			var actualC = _.find(countries, function(ac) {
+				return ac.id === c.id;
 			});
+			if (actualC) {
+				// One point if the country is in the top 10
+				score++;
+				if (actualC.rank === c.rank) {
+					// Another point if the country is in the right spot
+					score++;
+				}
+			}
+		});
 		return _.extend(u, {
-			score: score
+			score: score,
+			userCountries: userCountries
 		});
 	}), function(u) {
 		return -u.score;
@@ -204,7 +209,7 @@ Template.partiesShow.events({
 	'submit .edit-score': function(event) {
 		event.preventDefault();
 		var score = parseFloat($(event.target).find('input.edit-score').val());
-		if (_.isNaN(score) || score < 0 || score > 100) {
+		if (_.isNaN(score)) {
 			return alert("Score must be a number between 0 and 100");
 		}
 		var pu = PartyUsers.findOne({

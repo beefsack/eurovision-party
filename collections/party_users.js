@@ -57,7 +57,8 @@ Meteor.methods({
 		}
 
 		if (!_.isNumber(score)) {
-			throw new Meteor.Error(422, "Score must be a number, eg. 5 or 90.2");
+			throw new Meteor.Error(422,
+				"Score must be a number between 0 and 100");
 		}
 
 		partyUser.countryScores = partyUser.countryScores || {};

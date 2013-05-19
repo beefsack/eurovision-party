@@ -96,12 +96,22 @@
 					<th></th>
 					<th>Name</th>
 					<th>Score</th>
+					{{#unless isVotingOpen}}
+						<th>Countries</th>
+					{{/unless}}
 				</tr>
 				{{#each partyUsersByScore}}
 					<tr>
 						<td>#{{rank}}</td>
 						<td>{{username}}</td>
 						<td>{{score}}</td>
+						{{#unless isVotingOpen}}
+							<td class="user-country-flags">
+								{{#each userCountries}}
+									<img class="flag" src="{{flagPath}}" title="{{name}}" />
+								{{/each}}
+							</td>
+						{{/unless}}
 					</tr>
 				{{/each}}
 			</table>
