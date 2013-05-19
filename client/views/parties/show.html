@@ -24,7 +24,7 @@
 	</div>
 	<div class="row">
 		{{#if showYourVotes}}
-			<div class="col col-lg-4">
+			<div class="col col-lg-{{colWidth}}">
 				<a id="your-votes"></a>
 				<h3>Your votes</h3>
 				<div class="panel">
@@ -79,7 +79,7 @@
 				</div>
 			</div>
 		{{/if}}
-		<div class="col col-lg-4">
+		<div class="col col-lg-{{colWidth}}">
 			<a id="party-ladder"></a>
 			<h3>
 				Party standings
@@ -106,13 +106,21 @@
 				{{/each}}
 			</table>
 		</div>
-		<div class="col col-lg-4">
+		<div class="col col-lg-{{colWidth}}">
 			<a id="country-ladder"></a>
 			<h3>Eurovision standings</h3>
 			<div class="panel">
 				<div class="panel-heading">What are Eurovision standings?</div>
 				The points that you see here are exactly the same as the points you see on TV.
 			</div>
+			{{#if showCountryScoreInputs}}
+				<div>
+					<label>
+						Search:
+						<input id="country-ladder-search" />
+					</label>
+				</div>
+			{{/if}}
 			<table class="table table-striped country-ladder">
 				<tr>
 					<th></th>

@@ -56,7 +56,20 @@ Template.partiesShow.helpers({
 		return Template.partiesShow.rankedCountriesForUser(Meteor.userId());
 	},
 	countriesByScore: function() {
-		return Template.partiesShow.countriesByScore();
+		var countries = Template.partiesShow.countriesByScore();
+		var filter = Session.get('countryLadderSearch');
+		if (filter && !filter.match(/^\s+$/)) {
+			filter = filter.toLowerCase();
+			countries = _.filter(countries, function(c) {
+				return c.name.toLowerCase().indexOf(filter) !== -1;
+			});
+		}
+		return countries;
+	},
+	colWidth: function() {
+		return Meteor.userId() && PartyUsers.findOne({
+			userId: Meteor.userId()
+		}) ? 4 : 6;
 	}
 });
 
@@ -228,5 +241,8 @@ Template.partiesShow.events({
 					return alert(error.reason);
 				}
 			});
+	},
+	'keyup #country-ladder-search': function(event) {
+		Session.set('countryLadderSearch', event.target.value);
 	}
 });
